@@ -1,0 +1,16 @@
+.root {
+    background-color: #000000;
+    /* min-width: 320px; */
+    width: 100%;
+    min-height: 100vh;
+    justify-content: center;
+    font-family: 'Inter', 'Arial', sans-serif;
+    color: #FFFFFF;
+    margin: 0 auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+}

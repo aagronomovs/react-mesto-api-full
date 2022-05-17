@@ -1,0 +1,25 @@
+.popup__error {
+    font-style: normal;
+    font-weight: normal;
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 15px;
+    color: #FF0000;
+    width: 100%;
+    max-width: 164px;
+    display: none;
+    margin-bottom: 13px;
+    text-align: left;
+}
+
+@media screen and (min-width: 768px) {
+    .popup__error {
+        max-width: 270px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .popup__error {
+        max-width: 358px;
+    }
+}

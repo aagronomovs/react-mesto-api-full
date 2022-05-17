@@ -1,0 +1,20 @@
+.register__form-input {
+    margin: 30px 0;
+    padding: 0;
+    padding-bottom: 13px;
+    border: 0;
+    border-bottom: 2px solid #CCCCCC;
+    background-color: black;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #CCCCCC;
+}
+
+.register__form-input:focus {
+    outline: none;
+}
+
+.register__form-input:first-of-type {
+    margin-bottom: 0;
+}

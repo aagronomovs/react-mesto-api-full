@@ -1,0 +1,17 @@
+.header__container {
+    display: flex;
+    max-width: 220px;
+    flex-direction: column;
+    overflow: hidden;
+    /*padding-top: 40px; */
+}
+
+
+@media screen and (min-width: 768px) {
+    .header__container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin: 30px 30px 33px 0;
+    }
+}

@@ -1,0 +1,30 @@
+.profile__avatar-container {
+    margin: 0;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.profile__avatar-container::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.8);
+    background-size: 26px;
+    background: center no-repeat url(../../../image/Avatar_edit.svg);
+    content: "";
+    visibility: hidden;
+    cursor: pointer;
+    transition: opacity .4s, visibility .4s linear;
+}
+
+.profile__avatar-container:hover::after {
+    opacity: 1;
+    visibility: visible;
+}

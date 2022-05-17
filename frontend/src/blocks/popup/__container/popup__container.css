@@ -1,0 +1,23 @@
+.popup__container {
+    width: 100%;
+    max-width: 282px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+    background: #FFFFFF;
+    border-radius: 10px;
+    margin: 0 auto;
+    position: relative;
+    font-family: 'Inter', 'Arial', sans-serif;
+    color: #000000;
+}
+
+@media screen and (min-width: 768px) {
+    .popup__container {
+        max-width: 300px;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .popup__container {
+        max-width: 430px;
+    }
+}
