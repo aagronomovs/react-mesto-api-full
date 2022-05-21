@@ -24,7 +24,7 @@ function Main(props) {
             </section>
 
             <section className="cards">
-                {props.cards.map(item => (
+                {props.cards.map((item) => (
                     <Card
                         key={item._id}
                         card={item}
