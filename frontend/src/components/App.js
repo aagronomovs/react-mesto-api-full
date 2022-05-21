@@ -36,12 +36,13 @@ function App() {
   const onLogin = (data) => {
     auth.authorize(data.password, data.email)
       .then((res) => {
-        if (res.token) {
-          localStorage.setItem('jwt', res.token);
+        if (res) {
+          localStorage.setItem('token', res.token);
+          handleTokenCheck();
           setIsLoggedIn(true);
-         // handleTokenCheck();
-         navigate('/');
-          setEmail(data.email)
+          setCurrentUser(res);
+          navigate('/');
+          setEmail(data.email);
         }
       })
       .catch(err => {
@@ -51,10 +52,10 @@ function App() {
 
   const handleLogout = () => {
     //e.preventDefault();
-    localStorage.removeItem('jwt')
+    localStorage.removeItem('token')
+    navigate('/');
     setIsLoggedIn(false);
-    setEmail('');
-    navigate('/')
+    setEmail('');    
   }
 
 
@@ -68,9 +69,11 @@ function App() {
 //}
 
   const handleTokenCheck = () => {
-   if (localStorage.getItem('jwt')) {
-      const jwt = localStorage.getItem('jwt');
-      auth.checkToken(jwt).then((res) => {
+    const token = localStorage.getItem('token');
+   if (token) {
+      
+      auth.checkToken(token)
+      .then((res) => {
       if (res) {
         setIsLoggedIn(true);
        setEmail(res.data.email);
@@ -151,15 +154,17 @@ function App() {
     return () => document.removeEventListener('keydown', closeByEscape)
   }, [])
 
+  useEffect(() => handleTokenCheck(), []);
+
 
   //Получаем данные пользователя
   useEffect(() => {
-    handleTokenCheck();
-    navigate('/');
+    //handleTokenCheck();
+    //navigate('/');
     if (isLoggedIn) {
       Promise.all([api.getUserInfo(), api.getCards() ])
       .then(([currentUser, cards]) => {
-      setCurrentUser(currentUser);
+      setCurrentUser(currentUser.data);
       setCards(cards);
     })
       .catch(err => {
@@ -174,8 +179,8 @@ function App() {
   //Обновить данные пользователя
   const handleUpdateUser = ({name, about}) => {
     api.updateUserInfo({name, about})
-      .then((res) => {
-        setCurrentUser(res);
+      .then((data) => {
+        setCurrentUser(data.data);
         closeAllPopups();
       })
       .catch(err => {
@@ -187,8 +192,8 @@ function App() {
   //Обновить аватар
   const handleUpdateAvatar = (avatar) => {
     api.updateAvatar(avatar)
-      .then((res) => {
-        setCurrentUser(res);
+      .then((data) => {
+        setCurrentUser(data);
         closeAllPopups();
       })
       .catch(err => {
@@ -215,17 +220,17 @@ function App() {
   //Ставим лайк/удаляем лайк
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
     isLiked
       ? api.removeLike(card._id).then((newCard) => {
-        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        setCards((state) => state.map((c) => c._id === card._id ? newCard.data : c));
       })
         .catch(err => {
           console.error(err);
         })
       : api.getLike(card._id).then((newCard) => {
-        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        setCards((state) => state.map((c) => c._id === card._id ? newCard.data : c));
       })
         .catch(err => {
           console.error(err);
@@ -289,6 +294,7 @@ function App() {
         </Routes>
 
         <Footer />
+        </div>
 
         <InfoToolTip isOpen={isInfoToolTipOpen} onClose={closeAllPopups} status={infoStatus} />
 
@@ -311,7 +317,7 @@ function App() {
 
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
 
-      </div>
+      
     </CurrentUserContext.Provider>
   );
 }

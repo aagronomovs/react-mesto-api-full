@@ -27,11 +27,7 @@ function Main(props) {
                 {props.cards.map(item => (
                     <Card
                         key={item._id}
-                        name={item.name}
-                        link={item.link}
-                        likes={item.likes}
-                        owner={item.owner}
-                        card={{ name: item.name, link: item.link, likes: item.likes, _id: item._id }}
+                        card={item}
                         onCardClick={props.onCardClick}
                         onCardLike={props.onCardLike}
                         onCardDelete={props.onCardDelete}

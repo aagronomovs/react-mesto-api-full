@@ -85,7 +85,7 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.send({ data: users}))
+    .then((users) => res.send(users))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные'));
@@ -98,7 +98,7 @@ module.exports.getUsers = (req, res, next) => {
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => new NotFoundError('Пользователь с таким id не найден'))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Передан невалидный id пользователя'));
@@ -112,7 +112,7 @@ module.exports.getUserById = (req, res, next) => {
   const { userId } = req.params;
   User.findById(userId)
     .orFail(() => new NotFoundError('Пользователь с таким id не найден'))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError('Передан невалидный id пользователя'));
@@ -135,7 +135,7 @@ module.exports.updateProfile = (req, res, next) => {
       },
     )
     .orFail(() => new NotFoundError('Пользователь с таким id не найден'))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
@@ -157,7 +157,7 @@ module.exports.updateAvatar = (req, res, next) => {
         runValidators: true
       })
     .orFail(() => new NotFoundError('Пользователь с таким id не найден'))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));

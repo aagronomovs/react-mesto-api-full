@@ -52,13 +52,13 @@ module.exports.deleteCard = (req, res, next) => {
   };
 
   module.exports.likeCard = (req, res, next) => {
-    const { cardId } = req.params;
+    //const { cardId } = req.params;
     Card.findByIdAndUpdate(
-      cardId,
+      req.params.cardId,
       { $addToSet: { likes: req.user._id } },
-      { new: true, runValidators: true })
+      { new: true})
       .orFail(() => new NotFoundError('Передан несуществующий id карточки'))
-      .then((card) => res.send({ data: card }))
+      .then((card) => res.send(card))
       .catch((err) => {
         if (err.name === 'CastError') {
          next(new BadRequestError('Переданы некорректные данные для постановки лайка'))
@@ -72,9 +72,9 @@ module.exports.deleteCard = (req, res, next) => {
     Card.findByIdAndUpdate(
       req.params.cardId,
       { $pull: { likes: req.user._id } },
-      { new: true, runValidators: true })
+      { new: true })
       .orFail(() => new NotFoundError('Передан несуществующий id карточки'))
-      .then((card) => res.send({ data: card }))
+      .then((card) => res.send(card))
       .catch((err) => {
         if (err.name === 'CastError') {
           next(new BadRequestError('Переданы некорректные данные для постановки лайка'))
