@@ -157,9 +157,10 @@ function App() {
     handleTokenCheck();
     navigate('/');
     if (isLoggedIn) {
-    api.getUserInfo()
-    .then(data => {
-      setCurrentUser(data)
+      Promise.all([api.getUserInfo(), api.getCards() ])
+      .then(([currentUser, cards]) => {
+      setCurrentUser(currentUser);
+      setCards(cards);
     })
       .catch(err => {
         console.log(err);
@@ -171,8 +172,8 @@ function App() {
   
 
   //Обновить данные пользователя
-  const handleUpdateUser = (data) => {
-    api.updateUserInfo(data)
+  const handleUpdateUser = ({name, about}) => {
+    api.updateUserInfo({name, about})
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
@@ -196,20 +197,20 @@ function App() {
   }
 
   //Получаем карточки с сервера
-  useEffect(() => {
-    handleTokenCheck();
-    navigate('/');
-    if (isLoggedIn) {
-    api.getCards()
-      .then(cards => {
-        setCards(cards);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-    }
+ // useEffect(() => {
+   // handleTokenCheck();
+    //navigate('/');
+    //if (isLoggedIn) {
+    //api.getCards()
+    //  .then(cards => {
+     //   setCards(cards);
+     // })
+     // .catch(err => {
+     //   console.log(err);
+     // })
+   // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoggedIn]);
+  //}, [isLoggedIn]);
 
   //Ставим лайк/удаляем лайк
   function handleCardLike(card) {

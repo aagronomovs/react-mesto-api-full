@@ -72,9 +72,8 @@ class Api {
                 method: 'PATCH',
                 credentials: 'include',
                 headers: this._headers,
-                body: JSON.stringify({
-                    avatar
-                }),
+                body: JSON.stringify(
+                    {avatar}),
             })
             .then(this._getResponse);
     }

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function EditProfilePopup(props) {
-  const [name, setName] = React.useState('');
-  const [description, setDescription] = React.useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
   function handleChangeName(e) {
     setName(e.target.value);
@@ -15,11 +15,11 @@ function EditProfilePopup(props) {
   }  
 
   // Подписка на контекст
-  const currentUser = React.useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
 
   // После загрузки текущего пользователя из API
   // его данные будут использованы в управляемых компонентах.
-  React.useEffect(() => {
+  useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
   }, [currentUser, props.isOpen]);
@@ -51,7 +51,7 @@ function EditProfilePopup(props) {
                maxLength="40" 
                required 
                placeholder="Имя" 
-               value={name} 
+               value={name || ''} 
                onChange={handleChangeName}/>
         <span id="userform-name-input-error" className="popup__error"></span>
         <input id="userform-job-input" 
@@ -62,7 +62,7 @@ function EditProfilePopup(props) {
                minLength="2" 
                maxLength="200" 
                required 
-               value={description}
+               value={description || ''}
                onChange={handleChangeDescription} />
         <span id="userform-job-input-error" className="popup__error"></span>
 
