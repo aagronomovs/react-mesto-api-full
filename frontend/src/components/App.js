@@ -31,15 +31,16 @@ function App() {
   const [isInfoToolTipOpen, setIsInfoToolTipOpen] = useState(false);
   const [infoStatus, setInfoStatus] = useState("");
   const [email, setEmail] = useState("");
+    
 
   const onLogin = (data) => {
-    auth.authorize(data.email, data.password)
+    auth.authorize(data.password, data.email)
       .then((res) => {
         if (res.token) {
           localStorage.setItem('jwt', res.token);
           setIsLoggedIn(true);
-          handleTokenCheck();
-          navigate('/');
+         // handleTokenCheck();
+         navigate('/');
           setEmail(data.email)
         }
       })
@@ -48,49 +49,55 @@ function App() {
       });
   }
 
-  const handleLogout = (e) => {
-    e.preventDefault();
+  const handleLogout = () => {
+    //e.preventDefault();
     localStorage.removeItem('jwt')
     setIsLoggedIn(false);
     setEmail('');
-    navigate('/sign-in')
+    navigate('/')
   }
 
 
-  useEffect(() => {
-    handleTokenCheck();
-  }, []);
-
   //Проверка токена
+//const handleTokenCheck = () => {
+  //const token = localStorage.getItem('token');
+  //if (token) {
+   // setIsLoggedIn(true);
+  //  navigate('/');
+ // }
+//}
+
   const handleTokenCheck = () => {
-    if (localStorage.getItem('jwt')) {
+   if (localStorage.getItem('jwt')) {
       const jwt = localStorage.getItem('jwt');
       auth.checkToken(jwt).then((res) => {
-        if (res) {
-          setIsLoggedIn(true);
-          setEmail(res.data.email);
-          navigate('/');
-        }
-      })
-        .catch(err => {
-          console.log(err);
-          //setIsLoggedIn(false);
-        });
+      if (res) {
+        setIsLoggedIn(true);
+       setEmail(res.data.email);
+       navigate('/');
     }
+  })
+    .catch(err => {
+      console.log(err);
+      setIsLoggedIn(false);
+    });
+  }
   }
 
   const onRegister = (data) => {
-    auth.register(data.email, data.password)
-      .then((res) => {
-
-        if (res.data._id) {
-          setInfoStatus("success");
-          setIsInfoToolTipOpen(true);
-          setTimeout(() => {
-            closeAllPopups();
-            onLogin({ email: data.email, password: data.password });
-          }, 3000);
-        }
+    auth.register(data.password, data.email)
+      .then(() => {
+        setInfoStatus("success");
+        setIsInfoToolTipOpen(true);
+        navigate('sign-in');
+      //  if (res.data._id) {
+       //   setInfoStatus("success");
+       //   setIsInfoToolTipOpen(true);
+       //   setTimeout(() => {
+       //     closeAllPopups();
+       //     onLogin({ password: data.password, email: data.email });
+       //   }, 3000);
+        
       })
       .catch(err => {
         console.error(err);
@@ -147,14 +154,21 @@ function App() {
 
   //Получаем данные пользователя
   useEffect(() => {
+    handleTokenCheck();
+    navigate('/');
+    if (isLoggedIn) {
     api.getUserInfo()
-      .then(data => {
-        setCurrentUser(data)
-      })
+    .then(data => {
+      setCurrentUser(data)
+    })
       .catch(err => {
-        console.log(err)
+        console.log(err);
       })
-  }, [])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn]);
+
+  
 
   //Обновить данные пользователя
   const handleUpdateUser = (data) => {
@@ -183,6 +197,9 @@ function App() {
 
   //Получаем карточки с сервера
   useEffect(() => {
+    handleTokenCheck();
+    navigate('/');
+    if (isLoggedIn) {
     api.getCards()
       .then(cards => {
         setCards(cards);
@@ -190,7 +207,9 @@ function App() {
       .catch(err => {
         console.log(err);
       })
-  }, [])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn]);
 
   //Ставим лайк/удаляем лайк
   function handleCardLike(card) {

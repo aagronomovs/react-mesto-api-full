@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'https://api.mesto.aagronomovs.nomoredomains.xyz';
 
 const checkResponse = (res) => {
     if(res.ok){
@@ -8,11 +8,12 @@ const checkResponse = (res) => {
   }
   
   
-  export const register = (email, password) => {
+  export const register = (password, email) => {
     return fetch(`${BASE_URL}/signup`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        'Accept': 'application/json',
+       // 'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -26,11 +27,12 @@ const checkResponse = (res) => {
     })
   };
   
-  export const authorize = (email, password) => {
+  export const authorize = (password, email) => {
     return fetch(`${BASE_URL}/signin`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
-        'Accept': 'application/json',
+       // 'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -41,15 +43,14 @@ const checkResponse = (res) => {
     .then(checkResponse)
   };
   
-  export const checkToken = (token) => {
+  export const checkToken = () => {
     return fetch(`${BASE_URL}/users/me`, {
+      credentials: 'include',
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
+       // 'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      }
+        }
     })
     .then(checkResponse)
-    .then(data => data)
   }

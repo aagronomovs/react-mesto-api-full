@@ -17,7 +17,8 @@ class Api {
     getUserInfo() {
         return fetch(`${this._baseUrl}/users/me`, {
                 method: 'GET',
-                headers: this._headers,
+                credentials: 'include',
+                headers: this.headers
             })
             .then(this._getResponse);
     }
@@ -25,7 +26,8 @@ class Api {
     getCards() {
         return fetch(`${this._baseUrl}/cards`, {
                 method: 'GET',
-                headers: this._headers,
+                credentials: 'include',
+                headers: this.headers,
             })
             .then(this._getResponse);
     }
@@ -33,7 +35,8 @@ class Api {
     updateUserInfo(data) { //name, about
         return fetch(`${this._baseUrl}/users/me`, {
                 method: 'PATCH',
-                headers: this._headers,
+                credentials: 'include',
+                headers: this.headers,
                 body: JSON.stringify(data),
             })
             .then(this._getResponse);
@@ -42,7 +45,8 @@ class Api {
     postNewCard(data) {
         return fetch(`${this._baseUrl}/cards`, {
                 method: 'POST',
-                headers: this._headers,
+                credentials: 'include',
+                headers: this.headers,
                 body: JSON.stringify({
                     name: data.name,
                     link: data.link
@@ -54,7 +58,8 @@ class Api {
     deleteCard(cardId) {
         return fetch(`${this._baseUrl}/cards/${cardId}`, {
                 method: 'DELETE',
-                headers: this._headers,
+                credentials: 'include',
+                headers: this.headers,
             })
             .then(this._getResponse);
     }
@@ -62,7 +67,8 @@ class Api {
     updateAvatar(avatar) {
         return fetch(`${this._baseUrl}/users/me/avatar`, {
                 method: 'PATCH',
-                headers: this._headers,
+                credentials: 'include',
+                headers: this.headers,
                 body: JSON.stringify({
                     avatar
                 }),
@@ -73,7 +79,8 @@ class Api {
     getLike(cardId) {
         return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
                 method: 'PUT',
-                headers: this._headers,
+                credentials: 'include',
+                headers: this.headers,
             })
             .then(this._getResponse);
     }
@@ -81,17 +88,17 @@ class Api {
     removeLike(cardId) {
         return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
                 method: 'DELETE',
-                headers: this._headers,
+                credentials: 'include',
+                headers: this.headers,
             })
             .then(this._getResponse);
     }
 }
 
 const api = new Api({
-    baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-30',
+    baseUrl: 'https://api.mesto.aagronomovs.nomoredomains.xyz',
     headers: {
-    authorization: '35a287b1-80fa-4f60-8717-4407e47f6cbb',
-    'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
     },
 });
 

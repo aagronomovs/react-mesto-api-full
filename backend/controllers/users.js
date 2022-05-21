@@ -13,21 +13,26 @@ module.exports.login = (req, res, next) => {
     email,
     password
   } = req.body;
+  const { NODE_ENV, JWT_SECRET } = process.env;
 
  return User.findUserByCredentials(email, password)
   .then((user) => {
       // создадим токен
 
     const token = jwt.sign({ _id: user._id},
-    'some-secret-key', { expiresIn: '7d' });
+    //'some-secret-key',
+    NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+    { expiresIn: '7d' });
 
       // вернём токен
-      //return res.cookie('jwt', token, {
-      //  maxAge: 3600000 * 24 * 7,
-      //  httpOnly: true,
-      //  sameSite: 'none',
-      //})
-      res.status(200).send({ token });
+     return res
+      .cookie('token', token, {
+         maxAge: 3600000 * 24 * 7,
+         httpOnly: true,
+         sameSite: 'none',
+         secure: true,
+      })
+      .status(200).send({ token });
    })
    .catch(() => {
      next(new UnauthorizedError('Передан неверный логин или пароль'))

@@ -3,7 +3,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
+const { cors } = require('./middlewares/cors');
+//const helmet = require('helmet');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { celebrate, Joi, errors } = require('celebrate');
 const routerUser = require('./routes/users');
 const routerCards = require('./routes/cards');
@@ -12,7 +14,7 @@ const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/notFoundError');
 const { centralizedErrors } = require('./middlewares/centralizedErrors');
 const { validateLink} = require('./middlewares/validation');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 const { PORT = 3000 } = process.env;
 
 
@@ -26,10 +28,17 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
 app.use(cookieParser());
-app.use(express.json());
-app.use(cors());
-
+//app.use(express.json());
+//app.use(helmet);
 app.use(requestLogger);
+
+app.use(cors);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 // роуты, не требующие авторизации
 app.post('/signup', celebrate({
@@ -57,12 +66,11 @@ app.use(auth);
 app.use(routerUser);
 app.use(routerCards);
 
-app.use(errorLogger);
-
-
 app.use( '*', (req, res, next) => {
   next(new NotFoundError('Запрошенной страницы не существует'))
 });
+
+app.use(errorLogger);
 app.use(errors());
 app.use(centralizedErrors);
 

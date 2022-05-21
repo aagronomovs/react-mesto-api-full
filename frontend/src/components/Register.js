@@ -21,7 +21,7 @@ function Register({onRegister }) {
         onRegister({email: values.email, password: values.password });
     }
 
-    return (
+        return (
               
         <div className='register'>
             <p className='register__title'>Регистрация</p>
