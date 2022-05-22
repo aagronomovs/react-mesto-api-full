@@ -7,11 +7,7 @@ module.exports.getCards = (req, res, next) => {
   Card.find({})
     .then((data) => res.send(data))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные'));
-      } else {
-        next(err);
-      }
+      next(err);
     });
 };
 
