@@ -1,13 +1,10 @@
 const centralizedErrors = (err, req, res, next) => {
-  const { statusCode = 500, message } = err;
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Ошибка на сервере';
   res
     .status(statusCode)
-    .send({
-      message: statusCode === 500
-      ? 'err.name = ${err.name} ; err.message = ${err.message} ; Ошибка на сервере'
-      : message,
-    });
+    .send({ message });
   return next();
 };
 
-module.exports = { centralizedErrors }
+module.exports = { centralizedErrors };

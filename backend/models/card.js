@@ -8,30 +8,30 @@ const cardSchema = new mongoose.Schema({
     minlength: 2, // минимальная длина имени — 2 символа
     maxlength: 30, // а максимальная — 30 символов
   },
- link: {
+  link: {
     type: String,
     required: true,
     validate: {
       validator: (url) => validator.isURL(url),
       message: 'Некорректная ссылка',
-    }
+    },
   },
- owner: {
-  type: mongoose.Schema.Types.ObjectId,
-  ref: 'user',
-  required: true,
-},
-likes: [
-  {
-  type: mongoose.Schema.Types.ObjectId,
-  ref: 'user',
-  default: [],
-},
-],
-createdAt: {
-  type: Date,
-  default: Date.now(),
-}
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    required: true,
+  },
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user',
+      default: [],
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 // создаём модель и экспортируем её

@@ -7,7 +7,7 @@ const {
   getUserById,
   updateProfile,
   updateAvatar,
-} = require('../controllers/users.js');
+} = require('../controllers/users');
 const { validateUserId, validateProfile, validateAvatar } = require('../middlewares/validation');
 
 routerUser.get('/users', getUsers);
