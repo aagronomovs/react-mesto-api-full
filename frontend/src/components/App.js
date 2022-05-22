@@ -96,10 +96,10 @@ function App() {
       //  if (res.data._id) {
        //   setInfoStatus("success");
        //   setIsInfoToolTipOpen(true);
-       //   setTimeout(() => {
-       //     closeAllPopups();
-       //     onLogin({ password: data.password, email: data.email });
-       //   }, 3000);
+         setTimeout(() => {
+           closeAllPopups();
+           onLogin({ password: data.password, email: data.email });
+         }, 3000);
         
       })
       .catch(err => {
