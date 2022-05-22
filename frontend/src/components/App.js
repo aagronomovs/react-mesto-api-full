@@ -76,7 +76,7 @@ function App() {
       .then((res) => {
       if (res) {
         setIsLoggedIn(true);
-       setEmail(res.data.email);
+       setEmail(res.email);
        navigate('/');
     }
   })
@@ -154,7 +154,9 @@ function App() {
     return () => document.removeEventListener('keydown', closeByEscape)
   }, [])
 
-  useEffect(() => handleTokenCheck(), []);
+  useEffect(() => handleTokenCheck(), 
+  // eslint-disable-next-line
+  []);
 
 
   //Получаем данные пользователя
@@ -164,7 +166,7 @@ function App() {
     if (isLoggedIn) {
       Promise.all([api.getUserInfo(), api.getCards() ])
       .then(([currentUser, cards]) => {
-      setCurrentUser(currentUser.data);
+      setCurrentUser(currentUser);
       setCards(cards);
     })
       .catch(err => {
@@ -180,7 +182,7 @@ function App() {
   const handleUpdateUser = ({name, about}) => {
     api.updateUserInfo({name, about})
       .then((data) => {
-        setCurrentUser(data.data);
+        setCurrentUser(data);
         closeAllPopups();
       })
       .catch(err => {
@@ -224,13 +226,13 @@ function App() {
     // Отправляем запрос в API и получаем обновлённые данные карточки
     isLiked
       ? api.removeLike(card._id).then((newCard) => {
-        setCards((state) => state.map((c) => c._id === card._id ? newCard.data : c));
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
       })
         .catch(err => {
           console.error(err);
         })
       : api.getLike(card._id).then((newCard) => {
-        setCards((state) => state.map((c) => c._id === card._id ? newCard.data : c));
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
       })
         .catch(err => {
           console.error(err);
