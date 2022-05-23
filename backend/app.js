@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+
 const helmet = require('helmet');
 const { celebrate, Joi, errors } = require('celebrate');
 const { cors } = require('./middlewares/cors');
@@ -27,7 +28,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
 app.use(cookieParser());
-app.use(helmet);
+app.use(helmet());
 app.use(requestLogger);
 
 app.use(cors);
